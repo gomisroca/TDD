@@ -29,6 +29,10 @@ function createApp(database) {
     }
   }
 
+  function convert(date) {
+    return Temporal.PlainDate.from(date);
+  }
+
   function calculateCost(age, type, date, baseCost) {
     if (type === "night") {
       return calculateCostForNightTicket(age, baseCost);
@@ -76,13 +80,13 @@ function createApp(database) {
   }
 
   function isMonday(date) {
-    return date.dayOfWeek === 1;
+    return convert(date).dayOfWeek === 1;
   }
 
   function isHoliday(date) {
     const holidays = database.getHolidays();
     for (let row of holidays) {
-      let holiday = new Date(row.holiday);
+      let holiday = convert(new Date(row.holiday));
       if (date && date.year === holiday.year && date.month === holiday.month && date.day === holiday.day) {
         return true;
       }
